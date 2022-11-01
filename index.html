@@ -35,6 +35,10 @@
 
 <body>
     <div id="map"></div>
+    <div id="slideDiv">
+        <input id="slide" type="range" min="0" max="1" step="0.1" value="1" onchange="updateOpacity(this.value)"><br>
+        Opacity
+    </div>
     <!-- <div id="info"></div> -->
     <script src="assets/custom/basemaps.js"></script>
     <script src="assets/custom/popup.js"></script>

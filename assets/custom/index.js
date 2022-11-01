@@ -225,12 +225,12 @@ fetchText(salesUrl).then(text => {
 	salesLayer = L.geoJSON(sales_sector, {
 		style: styleSaleArea,
 		onEachFeature: onEachSaleArea,
-	});
+	}).addTo(map);
 
 	overlays['Secteur Scierie France'] = aoiLayer;
 	overlays['Carte commerciale scierie France'] = comFr;
 	overlays['Atelier'] = pointsLayer;
-	overlays['Sale Sector'] = salesLayer;
+	overlays['Service commercial Distribution'] = salesLayer;
 	layerControl = L.control.layers(baseLayers, overlays).addTo(map);
 
 	info.addTo(map);
@@ -247,14 +247,13 @@ info.update = function (html) {
 	this._div.innerHTML = html;
 };
 
-
-
-
 L.easyButton('fa-home fa-lg', function () {
 	map.fitBounds(aoiLayer.getBounds());
 }).addTo(map);
 
-
+function updateOpacity(value) {
+	salesLayer.setStyle({fillOpacity: value, opacity: value});;
+} 
 
 // let getLegendString = function(){
 //     let labels = [];

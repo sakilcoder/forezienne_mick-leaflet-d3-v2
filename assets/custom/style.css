@@ -48,6 +48,15 @@ body {
     color: #777;
 }
 
+#slideDiv{
+    position: absolute;
+    left: 0;
+    bottom: 10px;
+    margin: 5px 5px 5px 0;
+    z-index: 400;
+    text-align: center;
+}
+
 /* #icon {
     height: 100px;
 } */

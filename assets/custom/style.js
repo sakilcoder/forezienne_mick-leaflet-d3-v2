@@ -108,9 +108,9 @@ function styleSaleArea(feature) {
     // console.log(fc);
     return {
         weight: 1,
-        opacity: .5,
+        opacity: 1,
         color: '#2A3E56',
-        fillOpacity: 0.8, //opacité du layer carte commerciale
+        fillOpacity: 1, //opacité du layer carte commerciale
         fillColor: fc
     };
 }
