@@ -20,10 +20,10 @@ var map = L.map('map', {
 	// maxBounds: aoiLayer.getBounds(),
 	// maxBoundsViscosity: 1.0,
 	layers: [basemapCarto]
-});
+}).setView([46.2276, 2.2137], 5);
 map.options.minZoom = 5;
 map.options.maxZoom = 20;
-map.fitBounds(aoiLayer.getBounds());
+// map.fitBounds(aoiLayer.getBounds());
 L.Control.geocoder().addTo(map);
 const info = L.control();
 
@@ -42,12 +42,13 @@ let comFr = { "type": "FeatureCollection" };
 
 fetchText(csvUrl).then(text => {
 	let pois = d3.csvParse(text);
-	// console.log(pois);
+	console.log(pois);
 
 	for (i = 0; i < com_fr.features.length; i++) {
 		let adata = _.filter(pois, function (r) {
-			return r.id == com_fr.features[i].properties.id; // -1 means not present
+			return parseInt(r.id) == parseInt(com_fr.features[i].properties.id); // -1 means not present
 		});
+		console.log(adata);
 
 		com_fr.features[i].properties["name_1"] = adata[0].name_1;
 		com_fr.features[i].properties["name_2"] = adata[0].name_2;
@@ -248,12 +249,20 @@ info.update = function (html) {
 };
 
 L.easyButton('fa-home fa-lg', function () {
-	map.fitBounds(aoiLayer.getBounds());
+	// map.fitBounds(comFr.getBounds());
+	map.setView([46.2276, 2.2137], 5);
 }).addTo(map);
 
 function updateOpacity(value) {
 	salesLayer.setStyle({fillOpacity: value, opacity: value});;
-} 
+}
+
+map.on('baselayerchange', function (e) {
+    
+    if(e.name=='Service commercial Distribution'){
+        $('#slideDivslideDiv').show();
+    }
+});
 
 // let getLegendString = function(){
 //     let labels = [];
