@@ -257,12 +257,6 @@ function updateOpacity(value) {
 	salesLayer.setStyle({fillOpacity: value, opacity: value});;
 }
 
-map.on('baselayerchange', function (e) {
-    
-    if(e.name=='Service commercial Distribution'){
-        $('#slideDivslideDiv').show();
-    }
-});
 
 // let getLegendString = function(){
 //     let labels = [];
