@@ -48,8 +48,8 @@ function onEachComFr(feature, layer) {
 
 
 
-    // popup.setContent(str_popup);
-    // layer.bindPopup(popup, popupOptions);
+    popup.setContent(str_popup);
+    layer.bindPopup(popup, popupOptions);
 
 
     layer.on({
@@ -61,34 +61,21 @@ function onEachComFr(feature, layer) {
     layer.bindTooltip(layer.feature.properties.cca_2, {
         permanent: true,
         direction: "center",
-        opacity: 1,
+        opacity: .5,
         className: 'label-tooltip'
     });
 
 
-// Activer le popup au clic
-
-
- //   layer.on('click', function (e) {
- //       var popup = e.target.getPopup();
- //       popup.setLatLng(e.latlng).openOn(map);
- //   });
-
-
-
-
-// Activer le popup au survol
-
 
      layer.on('mouseover', function (e) {
-        //  var popup = e.target.getPopup();
-        //  popup.setLatLng(e.latlng).openOn(map);
-        info.update(str_popup);
+         var popup = e.target.getPopup();
+         popup.setLatLng(e.latlng).openOn(map);
+        // info.update(str_popup);
      });
 
      layer.on('mouseout', function (e) {
-        //  e.target.closePopup();
-        info.update('');
+         e.target.closePopup();
+        // info.update('');
      });
 }
 function onEachPoint(feature, layer){
@@ -123,19 +110,24 @@ function onEachSaleArea(feature, layer){
     '<b>Phone: </b>'+ feature.properties.phone + '<br><b>Email: </b>'+ feature.properties.email +
     ' </span>';
 
+    popup.setContent(str_popup);
+    layer.bindPopup(popup, popupOptions);
 
     layer.on('mouseover', function (e) {
-        info.update(str_popup);
+        // info.update(str_popup);
+        var popup = e.target.getPopup();
+         popup.setLatLng(e.latlng).openOn(map);
     });
 
     layer.on('mouseout', function (e) {
-        info.update('');
+        // info.update('');
+        e.target.closePopup();
     });
 
     layer.bindTooltip(layer.feature.properties.cca_2, {
         permanent: true,
         direction: "center",
-        opacity: 1,
+        opacity: .6,
         className: 'label-tooltip'
     });
 

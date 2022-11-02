@@ -36,6 +36,7 @@ var baseLayers = {
 let layerControl;
 let pointsLayer;
 let salesLayer;
+var commercial;
 let overlays = {};
 
 let comFr = { "type": "FeatureCollection" };
@@ -116,55 +117,12 @@ fetchText(csvUrl).then(text => {
 		com_fr.features[i].properties["com_type_name26"] = adata[0].com_type_name26;
 		com_fr.features[i].properties["com_value26"] = adata[0].com_value26;
 
-
-
 	}
 
 	comFr = L.geoJSON(com_fr, {
 		style: styleComFr,
 		onEachFeature: onEachComFr,
 	});
-
-
-	comFr.addTo(map);
-	aoiLayer.addTo(map);
-
-
-	// // Add markers
-	//     // position we will use later
-	// 	//48.01889281221366, 0.11363929811168137
-	//     var lat_trange = 48.01889281221366;
-	//     var lon_trange = 0.11363929811168137;
-
-	// 	//45.77589614317896, 4.214680199179003
-	//     var lat_epercieux = 45.77589614317896;
-	//     var lon_epercieux = 4.214680199179003;
-
-	// 	//48.706413222085985, 7.760882599218421
-	//     var lat_geudertheim = 48.706413222085985;
-	//     var lon_geudertheim = 7.760882599218421;
-
-	// 	//44.40682727061503, 0.2934339279967747
-	//     var lat_tonneins = 44.406827270615033;
-	//     var lon_tonneins = 0.2934339279967747;
-
-	// 	//49.795620275206744, 4.626402071670263
-	//     var lat_charleville = 49.795620275206744;
-	//     var lon_charleville = 4.626402071670263;
-
-	//     marker_trange = L.marker([lat_trange, lon_trange]).addTo(map);
-	// 	marker_epercieux = L.marker([lat_epercieux, lon_epercieux]).addTo(map);
-	// 	marker_geudertheim = L.marker([lat_geudertheim, lon_geudertheim]).addTo(map);
-	// 	marker_tonneins = L.marker([lat_tonneins, lon_tonneins]).addTo(map);
-	// 	marker_charleville = L.marker([lat_charleville, lon_charleville]).addTo(map);
-
-	//     // add popup to the marker
-	//     marker_trange.bindPopup("<b>Trangé</b>").openPopup();
-	//     marker_epercieux.bindPopup("<b>Epercieux-Saint-Paul</b>").openPopup();
-	//     marker_geudertheim.bindPopup("<b>Geudertheim</b>").openPopup();
-	//     marker_tonneins.bindPopup("<b>Tonneins</b>").openPopup();
-	//     marker_charleville.bindPopup("<b>Charleville-Mezieres</b>").openPopup();
-
 
 	var controlSearch = new L.Control.Search({
 		// position:'topright',	
@@ -220,77 +178,55 @@ fetchText(salesUrl).then(text => {
 			sales_sector.features[i].properties['phone'] = d[0].phone;
 			sales_sector.features[i].properties['email'] = d[0].email;
 		}
-
 	}
+	
+	commercial = L.layerGroup([comFr, aoiLayer]).addTo(map);
 
 	salesLayer = L.geoJSON(sales_sector, {
 		style: styleSaleArea,
 		onEachFeature: onEachSaleArea,
 	}).addTo(map);
 
-	overlays['Secteur Scierie France'] = aoiLayer;
-	overlays['Carte commerciale scierie France'] = comFr;
-	overlays['Atelier'] = pointsLayer;
+	
+
+	// overlays['Secteur Scierie France'] = aoiLayer;
+	overlays['Carte commerciale scierie France'] = commercial;
 	overlays['Service commercial Distribution'] = salesLayer;
+	overlays['Atelier'] = pointsLayer;
 	layerControl = L.control.layers(baseLayers, overlays).addTo(map);
 
-	info.addTo(map);
+	console.log(layerControl._layers);
 
 });
 
-info.onAdd = function (map) {
-	this._div = L.DomUtil.create('div', 'info');
-	this.update('');
-	return this._div;
-};
-
-info.update = function (html) {
-	this._div.innerHTML = html;
-};
 
 L.easyButton('fa-home fa-lg', function () {
-	// map.fitBounds(comFr.getBounds());
 	map.setView([46.2276, 2.2137], 5);
 }).addTo(map);
 
+var layerOpacity = L.control({ position: 'topright' });
+
+layerOpacity.onAdd = function (map) {
+    this._div = L.DomUtil.create('div', 'info slide');
+    this._div.innerHTML = '<div id="slideDiv"><input id="slide" type="range" min="0" max="1" step="0.1" value="1" onchange="updateOpacity(this.value)"><br>Opacity</div>';
+    return this._div;
+};
+
+layerOpacity.addTo(map);
+
+
 function updateOpacity(value) {
-	salesLayer.setStyle({fillOpacity: value, opacity: value});;
+	aoiLayer.setStyle({ opacity: value});
+	salesLayer.setStyle({fillOpacity: value, opacity: value});
+	comFr.setStyle({fillOpacity: value, opacity: value});
+	// pointsLayer.setStyle({fillOpacity: value, opacity: value});
 }
 
-
-// let getLegendString = function(){
-//     let labels = [];
-//     str = '<h4 align="center">Carte commerciale scierie France</h4>';
-//     for (var i = 0; i < legendValue.length; i++) {
-//         labels.push(
-//             '<i style="background:' + getFillColor(legendValue[i]) + '"></i> ' + legendValue[i]);
-//     }
-//     str += labels.join('<br>');
-//     return str;
-// }
-
-
-
-// Activer ou non la legende
-
-
-// var legend = L.control({position: 'bottomright'});
-
-	// legend.onAdd = function (map) {
-
-		// var div = L.DomUtil.create('div', 'info legend');
-
-		// var labels = [];
-
-		// for (var i = 0; i < legendValue.length; i++) {
-
-			// labels.push(
-				// '<i style="background:' + getFillColor(legendValue[i]) + '"></i> <b>' + legendValue[i] + '</b> ' + legendValue2[i]);
-		// }
-
-		// div.innerHTML = labels.join('<br>');
-		// return div;
-	// };
-
-	// legend.addTo(map);
-
+var container = document.getElementById("slideDiv");
+if (!L.Browser.touch) {
+  L.DomEvent
+    .disableClickPropagation(container)
+    .disableScrollPropagation(container);
+} else {
+  L.DomEvent.disableClickPropagation(container);
+}
