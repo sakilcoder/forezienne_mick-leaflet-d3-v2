@@ -42,13 +42,13 @@ let comFr = { "type": "FeatureCollection" };
 
 fetchText(csvUrl).then(text => {
 	let pois = d3.csvParse(text);
-	console.log(pois);
+	// console.log(pois);
 
 	for (i = 0; i < com_fr.features.length; i++) {
 		let adata = _.filter(pois, function (r) {
 			return parseInt(r.id) == parseInt(com_fr.features[i].properties.id); // -1 means not present
 		});
-		console.log(adata);
+		// console.log(adata);
 
 		com_fr.features[i].properties["name_1"] = adata[0].name_1;
 		com_fr.features[i].properties["name_2"] = adata[0].name_2;
