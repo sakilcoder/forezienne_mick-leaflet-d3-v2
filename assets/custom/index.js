@@ -22,7 +22,7 @@ var map = L.map('map', {
 	layers: [basemapCarto]
 }).setView([46.2276, 2.2137], 5);
 map.options.minZoom = 5;
-map.options.maxZoom = 20;
+map.options.maxZoom = 12;
 // map.fitBounds(aoiLayer.getBounds());
 L.Control.geocoder().addTo(map);
 const info = L.control();
@@ -185,7 +185,7 @@ fetchText(salesUrl).then(text => {
 	salesLayer = L.geoJSON(sales_sector, {
 		style: styleSaleArea,
 		onEachFeature: onEachSaleArea,
-	}).addTo(map);
+	});
 
 	
 

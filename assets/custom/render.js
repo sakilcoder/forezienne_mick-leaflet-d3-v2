@@ -55,7 +55,7 @@ function onEachComFr(feature, layer) {
     layer.on({
         // mouseover: highlightFeature,
         // mouseout: resetHighlight,
-        click: zoomToFeature
+        // click: zoomToFeature
     });
 
     layer.bindTooltip(layer.feature.properties.cca_2, {
