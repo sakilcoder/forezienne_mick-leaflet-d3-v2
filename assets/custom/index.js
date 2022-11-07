@@ -36,7 +36,7 @@ var baseLayers = {
 let layerControl;
 let pointsLayer;
 let salesLayer;
-var commercial;
+var commercial = L.layerGroup();
 let overlays = {};
 
 let comFr = { "type": "FeatureCollection" };
@@ -124,6 +124,9 @@ fetchText(csvUrl).then(text => {
 		onEachFeature: onEachComFr,
 	});
 
+	// comFr.addTo(commercial);
+	commercial = L.layerGroup([comFr, aoiLayer]);
+
 	var controlSearch = new L.Control.Search({
 		// position:'topright',	
 		layer: comFr,
@@ -180,14 +183,12 @@ fetchText(salesUrl).then(text => {
 		}
 	}
 	
-	commercial = L.layerGroup([comFr, aoiLayer]).addTo(map);
+	commercial.addTo(map);
 
 	salesLayer = L.geoJSON(sales_sector, {
 		style: styleSaleArea,
 		onEachFeature: onEachSaleArea,
 	});
-
-	
 
 	// overlays['Secteur Scierie France'] = aoiLayer;
 	overlays['Carte commerciale scierie France'] = commercial;
